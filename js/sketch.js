@@ -1,15 +1,22 @@
 import { gameObject } from "./classes/gameObject.js";
 import { pacman } from "./classes/pacman.js";
+import { Food } from "./classes/food.js";
 
 const map = [
-  [1, 1, 1, 1],
-  [2, 1, 1, 2],
-  [0, 1, 1, 2],
-  [1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 2, 2, 1, 2, 2, 2, 1],
+  [1, 2, 1, 1, 2, 1, 2, 1],
+  [1, 2, 1, 2, 2, 1, 2, 1],
+  [1, 2, 1, 2, 1, 1, 2, 1],
+  [1, 0, 2, 2, 2, 2, 2, 1],
+  [1, 1, 2, 1, 1, 1, 2, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const ROWS = 4;
-const COLS = 4;
+
+
+const ROWS = 8;
+const COLS = 8;
 export const IMAGE_SIZE = 32;
 export const WIDTH_CANVAS = COLS * IMAGE_SIZE;
 export const HEIGHT_CANVAS = ROWS * IMAGE_SIZE;
@@ -56,7 +63,7 @@ function setup() {
         console.log(`He creado una roca en la columna ${colActual} y fila ${rowActual}`);
         arrRocks.push(rock);
       } else if (map[rowActual][colActual] === 2) {// 2 es comida
-        const food = new gameObject(x, y);
+        const food = new Food(x, y);
         console.log(`He creado una comida en la columna ${colActual} y fila ${rowActual}`);
         arrFood.push(food);
       } else if (map[rowActual][colActual] === 0) { // 0 es pacman
@@ -74,25 +81,36 @@ function draw() {
   arrRocks.forEach((rock) => rock.showObject(imgRock));
   // Dibujar la comida
   arrFood.forEach((food) => food.showObject(imgFood));
-  // Dibujar a Pacman se
-    //myPacman.showObject(imgPacman);
-    switch (myPacman.direction){
-      case 1:
-        myPacman.showObject(imgPacmanRIGHT);
-        break;
-      case 2:
-        myPacman.showObject(imgPacmanDOWN);
-        break;
-      case 3:
-        myPacman.showObject(imgPacmanLEFT);
-        break;
-      case 4:
-        myPacman.showObject(imgPacmanUP);
-        break;
-        default:
-          myPacman.showObject(imgPacmanRIGHT);
+  //comprobar colisiones
+ // for (let i=0;i<arrRocks; i++){
+    //myPacman.testCollideRock(arrRocks[i]);
+  //}
+  //compobar colisiones con la comida
+ for(let i =0; i<arrFood.length; i++){
+    let resultTest = myPacman.testCollideFood(arrFood[i]);
+    if (resultTest){
+      arrFood.splice(i, 1);
+      myPacman.score = myPacman.score + arrFood[i];
     }
-
+ }
+  // Dibujar a Pacman se
+  //myPacman.showObject(imgPacman);
+  switch (myPacman.direction){
+    case 1:
+      myPacman.showObject(imgPacmanRIGHT);
+      break;
+    case 2:
+      myPacman.showObject(imgPacmanDOWN);
+      break;
+    case 3:
+      myPacman.showObject(imgPacmanLEFT);
+      break;
+    case 4:
+      myPacman.showObject(imgPacmanUP);
+      break;
+    default:
+      myPacman.showObject(imgPacmanRIGHT);
+  }
 }
 
 function keyPressed() {
