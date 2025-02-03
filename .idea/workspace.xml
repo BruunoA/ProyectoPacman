@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ab2663d-9c78-48d3-8cbc-2fbdacbb501f" name="Changes" comment="v3">
-      <change afterPath="$PROJECT_DIR$/ jsdoc.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-    </list>
+    <list default="true" id="7ab2663d-9c78-48d3-8cbc-2fbdacbb501f" name="Changes" comment="v3" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -117,7 +112,7 @@
       <workItem from="1737999604990" duration="260000" />
       <workItem from="1738013763945" duration="355000" />
       <workItem from="1738592415076" duration="336000" />
-      <workItem from="1738592775774" duration="5678000" />
+      <workItem from="1738592775774" duration="5904000" />
     </task>
     <task id="LOCAL-00001" summary="Primer commit del proyecto Pacman">
       <option name="closed" value="true" />
