@@ -13,10 +13,9 @@ const map = [
   [1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-
-
 const ROWS = 8;
 const COLS = 8;
+const extra_size = 300;
 export const IMAGE_SIZE = 32;
 export const WIDTH_CANVAS = COLS * IMAGE_SIZE;
 export const HEIGHT_CANVAS = ROWS * IMAGE_SIZE;
@@ -31,6 +30,10 @@ let imgPacmanUP, imgPacmanDOWN, imgPacmanLEFT, imgPacmanRIGHT; //imagenes de pac
 let myPacman;
 
 let numberImageLoaded = 0;
+
+let startTimeGame = 0;
+let timer = 0;
+
 
 function preload() {
   imgRock = loadImage("img/roca.png", handleImage, handleError);
@@ -51,29 +54,37 @@ function handleImage() {
 }
 
 function setup() {
-  createCanvas(WIDTH_CANVAS, HEIGHT_CANVAS).parent("sketch-pacman");
+  createCanvas(WIDTH_CANVAS, HEIGHT_CANVAS + extra_size).parent("sketch-pacman");
 
   for (let rowActual = 0; rowActual < ROWS; rowActual++) {
     for (let colActual = 0; colActual < COLS; colActual++) {
       const x = colActual;
       const y = rowActual;
 
-      if (map[rowActual][colActual] === 1) { // 1 es una roca
+      if (map[rowActual][colActual] === 1) {
+        // 1 es una roca
         const rock = new gameObject(x, y);
-        console.log(`He creado una roca en la columna ${colActual} y fila ${rowActual}`);
+        console.log(
+          `He creado una roca en la columna ${colActual} y fila ${rowActual}`
+        );
         arrRocks.push(rock);
-      } else if (map[rowActual][colActual] === 2) {// 2 es comida
+      } else if (map[rowActual][colActual] === 2) {
+        // 2 es comida
         const food = new Food(x, y);
-        console.log(`He creado una comida en la columna ${colActual} y fila ${rowActual}`);
+        console.log(
+          `He creado una comida en la columna ${colActual} y fila ${rowActual}`
+        );
         arrFood.push(food);
-      } else if (map[rowActual][colActual] === 0) { // 0 es pacman
+      } else if (map[rowActual][colActual] === 0) {
+        // 0 es pacman
         myPacman = new pacman(x, y);
-        console.log(`He creado a Pacman en la columna ${colActual} y fila ${rowActual}`);
+        console.log(
+          `He creado a Pacman en la columna ${colActual} y fila ${rowActual}`
+        );
       }
     }
   }
 }
-
 
 function draw() {
   background(135, 206, 235);
@@ -82,20 +93,27 @@ function draw() {
   // Dibujar la comida
   arrFood.forEach((food) => food.showObject(imgFood));
   //comprobar colisiones
- // for (let i=0;i<arrRocks; i++){
-    //myPacman.testCollideRock(arrRocks[i]);
-  //}
+  for (let i = 0; i < arrRocks.length; i++) {
+    myPacman.testCollideRock(arrRocks[i]);
+  }
   //compobar colisiones con la comida
- for(let i =0; i<arrFood.length; i++){
+  for (let i = 0; i < arrFood.length; i++) {
     let resultTest = myPacman.testCollideFood(arrFood[i]);
-    if (resultTest){
+    if (resultTest) {
+      myPacman.scorePacman = myPacman.scorePacman + arrFood[i].pointsFood;
       arrFood.splice(i, 1);
-      myPacman.score = myPacman.score + arrFood[i];
     }
- }
+  }
+
+  // Dibujar a ScoreBoard
+  textSize(20);
+  textAlign(CENTER, CENTER);
+  timer = parseInt( millis() - startTimeGame);
+  text("Score: " + myPacman.scorePacman, 150,HEIGHT_CANVAS + 50);
+  text("Time: " + timer, 150,HEIGHT_CANVAS + 100);
+
   // Dibujar a Pacman se
-  //myPacman.showObject(imgPacman);
-  switch (myPacman.direction){
+  switch (myPacman.direction) {
     case 1:
       myPacman.showObject(imgPacmanRIGHT);
       break;
@@ -126,8 +144,19 @@ function keyPressed() {
   } else if (keyCode === DOWN_ARROW) {
     console.log("Abajo");
     myPacman.moveDown();
-  }else{
+  } else {
     console.log("Otra tecla");
+  }
+  testFinishGame();
+}
+
+function testFinishGame() {
+  if (arrFood.length === 0) {
+    noLoop();
+    let theconfirm = alert("Has ganado, quieres jugar de nuevo?");
+    if (theconfirm) {
+      restartGame();
+    }
   }
 }
 
