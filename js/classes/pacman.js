@@ -10,8 +10,9 @@ export class pacman extends  gameObject {
     this.direction = 2;
     this.direction = 3;
     this.direction = 4;
+    this.scorePacman = 0;
     this.speedPacman = 32; //tamano de la imagen 32px
-    this.widthCanvasPacman = 256;
+    this.widthCanvasPacman = 750;
     this.pacmanDiameter = 32;
   }
 
@@ -58,6 +59,7 @@ export class pacman extends  gameObject {
       this.coordYPixels = temp;
     }
   }
+  
 
   testCollideFood(Food) {
     if (this.coordXPixels == Food.coordXPixels && this.coordYPixels == Food.coordYPixels) {
@@ -67,4 +69,21 @@ export class pacman extends  gameObject {
     return false;
   }
 
+  testCollideRock(roca){
+    let distancia = dist(this.coordXPixels,
+      this.coordYPixels, roca.coordXPixels, roca.coordYPixels);
+    // console.log( "Distancia entre pacman i roca: " + distancia);
+
+    if (distancia < IMAGE_SIZE) {
+      alert("Has chocado con una roca, pierdes una vida");
+      this.pacmanlives--;
+      this.spawnPacman();
+      } 
+    }
+
+  //para que pacman vuelva a la posicion inicial o 
+  spawnPacman() {
+    this.coordXPixels = 2*IMAGE_SIZE;
+    this.coordYPixels = 5*IMAGE_SIZE;
+  }
 }
