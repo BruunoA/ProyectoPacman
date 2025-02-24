@@ -75,15 +75,27 @@ export class pacman extends  gameObject {
     // console.log( "Distancia entre pacman i roca: " + distancia);
 
     if (distancia < IMAGE_SIZE) {
-      alert("Has chocado con una roca, pierdes una vida");
+      alert("Has chocado con una roca, pierdes una vida"); //popup par avisar que pierde una vida
       this.pacmanlives--;
       this.spawnPacman();
       } 
     }
 
+    testCollidePowup(powup) {
+      if (this.coordXPixels == powup.coordXPixels && this.coordYPixels == powup.coordYPixels) {
+        console.log("Colisión con Power-Up detectada");
+        powup.activate(this); // Activa el Power-Up y suma puntos
+        return true;
+      }
+      return false;
+    }
+    
   //para que pacman vuelva a la posicion inicial o 
   spawnPacman() {
     this.coordXPixels = 2*IMAGE_SIZE;
     this.coordYPixels = 5*IMAGE_SIZE;
   }
 }
+
+
+///poner powup si esta activado porne a falso, si choca poner a true 
